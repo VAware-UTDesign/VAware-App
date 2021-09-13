@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '60%',
-    backgroundColor: 'gray',
     backgroundColor: 'green',
     borderRadius: 15,
     color: 'white',
