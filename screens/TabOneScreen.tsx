@@ -8,7 +8,9 @@ import { RootTabScreenProps } from '../types';
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
     <View style={styles.container}>
+      <View style={styles.titleContainer}>
         <Text style={styles.title}>VAWARE</Text>
+      </View>
         <View style={styles.buttonContainer}>
           <Button
             title="Connect"
@@ -25,19 +27,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#0078DC',
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 60,
     textAlign: 'center',
+  },
+  titleContainer: {
+    marginTop: 10,
+    backgroundColor: 'white'
   },
   button: {
     color: 'grey',
   },
   buttonContainer: {
     width: '60%',
-    backgroundColor: 'black',
+    backgroundColor: 'gray',
     borderRadius: 15,
     color: 'white',
-    alignItems: 'center',
   }
 });
