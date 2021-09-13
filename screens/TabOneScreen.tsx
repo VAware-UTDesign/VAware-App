@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Button, StyleSheet } from 'react-native';
+import { Alert, Button, StyleSheet, Image } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -9,7 +9,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>VAWARE</Text>
+        <Image
+          style={styles.image}
+          source={require('../assets/images/VA-logo.png')}
+        />
       </View>
         <View style={styles.buttonContainer}>
           <Button
@@ -24,7 +27,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
 const styles = StyleSheet.create({
   container :{
-    backgroundColor: '#0078DC',
+    backgroundColor: '#ABD9FF',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -32,18 +35,26 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 60,
     textAlign: 'center',
+    color: 'white',
   },
   titleContainer: {
     marginTop: 10,
-    backgroundColor: 'white'
+    backgroundColor: '#ABD9FF',
+    marginBottom: 200,
   },
   button: {
     color: 'grey',
   },
   buttonContainer: {
-    width: '60%',
-    backgroundColor: 'green',
-    borderRadius: 15,
+    justifyContent: 'center',
+    width: 300,
+    height: 60,
+    backgroundColor: 'grey',
+    borderRadius: 30,
     color: 'white',
+  },
+  image: {
+    width: 200,
+    height: 200,
   }
 });
