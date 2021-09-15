@@ -1,26 +1,13 @@
 import React, { useState } from 'react';
-import { Alert, Pressable, StyleSheet, Image, Modal } from 'react-native';
+import { Pressable, StyleSheet, Image } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import ModalScreen from './ModalScreen';
 
 export default function ConnectUI({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.container}>
-      <Modal
-        presentationStyle="pageSheet"
-        animationType="slide"
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(false);
-        }}
-      >
-        <ModalScreen />
-      </Modal>
       <View style={styles.titleContainer}>
         <Image
           style={styles.image}
@@ -29,7 +16,9 @@ export default function ConnectUI({ navigation }: RootTabScreenProps<'TabOne'>) 
       </View>
         <View style={styles.buttonContainer}>
           <Pressable            
-            onPress={() => setModalVisible(true)}
+            onPress={() => 
+              navigation.navigate('Modal')
+            }
           >
             <Text style={styles.button}>Connect</Text>
           </Pressable>
