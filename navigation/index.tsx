@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ConnectUI from '../screens/ConnectUI';
 import ModalScreen from '../screens/ModalScreen';
 
-export default function HomeScreen() {
+export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
