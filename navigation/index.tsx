@@ -1,14 +1,26 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import ConnectUI from '../screens/ConnectUI';
-import ModalScreen from '../screens/ModalScreen';
+import BluetoothList from '../screens/BluetoothList';
+
+const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
+  const MyTheme = {
+    colors: {
+      primary: '#ABD9FF',
+      background: '#ABD9FF',
+      card: '#ABD9FF',
+      border: "#ABD9FF",
+      text: 'black',
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -20,12 +32,11 @@ export default function Navigation() {
           name="Home" 
           component={ConnectUI} 
         />
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Group screenOptions={{ presentation: 'modal', headerShown: true }}>
+          <Stack.Screen name='Connect' component={BluetoothList} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer> 
   )
 }
 
-const Stack = createNativeStackNavigator();

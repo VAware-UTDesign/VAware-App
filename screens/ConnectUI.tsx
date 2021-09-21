@@ -16,9 +16,10 @@ export default function ConnectUI({ navigation }: RootTabScreenProps<'TabOne'>) 
       </View>
         <View style={styles.buttonContainer}>
           <Pressable            
-            onPress={() => 
-              navigation.navigate('Modal')
-            }
+            onPress={() => navigation.navigate('Connect')}
+            style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+            })}
           >
             <Text style={styles.button}>Connect</Text>
           </Pressable>
