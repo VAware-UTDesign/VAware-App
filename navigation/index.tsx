@@ -5,6 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import ConnectUI from '../screens/ConnectUI';
 import BluetoothList from '../screens/BluetoothList';
+import BluetoothRow from '../components/TestEvent';
+import HomeScreen from '../screens/HomeScreen';
+import InfoScreen from '../screens/InfoScreen';
+import SequenceScreen from '../screens/SequenceScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,11 +34,17 @@ export default function Navigation() {
       >
         <Stack.Screen 
           name="Home" 
-          component={ConnectUI} 
+          component={ConnectUI} //ConnectUI
         />
         <Stack.Group screenOptions={{ presentation: 'modal', headerShown: true }}>
           <Stack.Screen name='Connect' component={BluetoothList} />
         </Stack.Group>
+        <Stack.Screen
+          name="Use"
+          component={HomeScreen}
+        />
+        <Stack.Screen name='Information' component={InfoScreen} />
+        <Stack.Screen name='Sequences' component={SequenceScreen} />
       </Stack.Navigator>
     </NavigationContainer> 
   )

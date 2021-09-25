@@ -5,7 +5,6 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
 export default function ConnectUI({ navigation }: RootTabScreenProps<'TabOne'>) {
-  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -16,7 +15,7 @@ export default function ConnectUI({ navigation }: RootTabScreenProps<'TabOne'>) 
       </View>
         <View style={styles.buttonContainer}>
           <Pressable            
-            onPress={() => navigation.navigate('Connect')}
+            onPress={() => navigation.navigate('Use')}
             style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
             })}
