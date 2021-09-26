@@ -5,18 +5,24 @@ import { ScrollView } from 'react-native-gesture-handler';
 import SequenceComponent from '../components/SequenceComponent';
 import TestEvent from '../components/TestEvent';
 import { Text, View } from '../components/Themed';
+import { useNavigation } from '@react-navigation/core';
+import InfoButton from '../components/InfoButton';
 
 export default function ConnectUI() {
+  
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-        <Pressable 
+        {/* <Pressable 
             style={styles.infoHead}
             onPress = {() => {
-                
+                navigation.navigate("Information");
             }}
         >
             <FontAwesome name="info-circle" size={30} color='grey'/>
-        </Pressable>
+        </Pressable> */}
+        <InfoButton />
         <ScrollView
             showsVerticalScrollIndicator={false}
             alwaysBounceVertical={false}
