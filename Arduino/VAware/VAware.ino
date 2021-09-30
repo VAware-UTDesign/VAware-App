@@ -1,5 +1,4 @@
 //import header files
-
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
@@ -8,7 +7,7 @@
 #define LED_BUILTIN 2
 #define pass (void)0
 #define BASE_VAL "0"
-#define TIME_DELAY 7000
+#define TIME_DELAY 700
 
 BLEServer* pServer = NULL;
 BLECharacteristic* pLedBuiltinCharacteristic = NULL;
@@ -35,7 +34,8 @@ class MyServerCallbacks : public BLEServerCallbacks
 //  void onWrite(BLECharacteristic *pCharacteristic) {
 //      std::string rxValue = pCharacteristic->getValue();
 //
-//      if (rxValue.length() > 0) {
+//      if (rxValue.length() > 0) 
+//      {
 //        Serial.println("*********");
 //        Serial.print("Received Value: ");
 //        for (int i = 0; i < rxValue.length(); i++)
@@ -47,27 +47,80 @@ class MyServerCallbacks : public BLEServerCallbacks
 //    }
 };
 
-// Init PINS: assign the pins for the LEDs:
-int ledPin1 = 21;
-int ledPin2 = 19;
-int ledPin3 = 18;
+// Init Pneumatics Parts: assign the pins for the Pneumatics:
+int pneumatics1 = 22;
+int pneumatics2 = 1;
+int pneumatics3 = 3;
+int pneumatics4 = 21;
+int pneumatics5 = 19;
+int pneumatics6 = 18;
 
-void pnuematicsOperate(int ledPin, String message)
+// Init Release Mechanism Checks: assign the pins for RMECHS:
+int releaseMech1 = 5;
+int releaseMech2 = 17;
+int releaseMech3 = 16;
+int releaseMech4 = 2;
+int releaseMech5 = 15;
+int releaseMech6 = 8;
+
+
+
+void pnuematicsOperate(int pin, int rMech, String message)
 {
-  digitalWrite(ledPin, HIGH);
+  digitalWrite(pin, HIGH);
   Serial.println(message);
-  delay(TIME_DELAY);
-  digitalWrite(ledPin, LOW);
+  for (int i = 0; i <= TIME_DELAY; i++){
+    delay(10);
+    if (releaseMechOpen(rMech) == true)
+    {
+      digitalWrite(pin, LOW);
+      break;
+    }
+  }
+  digitalWrite(pin, LOW);
   pLedBuiltinCharacteristic->setValue(BASE_VAL);
+//      digitalWrite(pneumatics2, HIGH);
+//      Serial.println("RED");
+//      delay(7000);
+//      digitalWrite(pneumatics2, LOW);
+//      pLedBuiltinCharacteristic->setValue("0");
+}
+
+bool releaseMechOpen(int rMech)
+{
+  if (digitalRead(rMech) == HIGH)
+  {
+    // not open
+    return false;
+  }
+  else 
+  {
+    return true;
+  }
 }
 
 void setup()
 {
   Serial.begin(115200);
+
+  //Bluetooth connection indicator
   pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(ledPin1, OUTPUT);
-  pinMode(ledPin2, OUTPUT);
-  pinMode(ledPin3, OUTPUT);
+
+  //Pneumatics Init Pins
+  pinMode(pneumatics1, OUTPUT);
+  pinMode(pneumatics2, OUTPUT);
+  pinMode(pneumatics3, OUTPUT);
+  pinMode(pneumatics4, OUTPUT);
+  pinMode(pneumatics5, OUTPUT);
+  pinMode(pneumatics6, OUTPUT);
+
+  //ReleaseMech Init Pins
+  pinMode(releaseMech1, OUTPUT);
+  pinMode(releaseMech2, OUTPUT);
+  pinMode(releaseMech3, OUTPUT);
+  pinMode(releaseMech4, OUTPUT);
+  pinMode(releaseMech5, OUTPUT);
+  pinMode(releaseMech6, OUTPUT);
 
   //Create the BLE DEVICE!
   BLEDevice::init("VAware");
@@ -109,25 +162,27 @@ void loop()
 
     if (value == "1")
     {
-      pnuematicsOperate(ledPin1, "INFLATEEEE");
+      pnuematicsOperate(pneumatics1, releaseMech1, "INFLATEEEE");
     }
     else if (value == "2")
     {
-      digitalWrite(ledPin2, HIGH);
-      Serial.println("RED");
-      delay(7000);
-      digitalWrite(ledPin2, LOW);
-      pLedBuiltinCharacteristic->setValue("0");
-//      pnuematicsOperate(ledPin2, "INFLATEEEE");
+      pnuematicsOperate(pneumatics2, releaseMech2, "INFLATEEEE");
     }
     else if (value == "3")
     {
-      digitalWrite(ledPin3, HIGH);
-      Serial.println("BLUE");
-      delay(7000);
-      digitalWrite(ledPin3, LOW);
-      pLedBuiltinCharacteristic->setValue("0");
-//      pnuematicsOperate(ledPin3, "INFLATEEEE");
+      pnuematicsOperate(pneumatics3, releaseMech3, "INFLATEEEE");
+    }
+    else if (value == "4")
+    {
+      pnuematicsOperate(pneumatics4, releaseMech4, "INFLATEEEE");
+    }
+    else if (value == "5")
+    {
+      pnuematicsOperate(pneumatics5, releaseMech5, "INFLATEEEE");
+    }
+    else if (value == "6")
+    {
+      pnuematicsOperate(pneumatics6, releaseMech6, "INFLATEEEE");
     }
     else
     {
