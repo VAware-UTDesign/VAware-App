@@ -9,15 +9,15 @@
 #define BASE_VAL "0"
 #define TIME_DELAY 700
 
+// Generated UUID's for different Charateristics
+#define SERVICE_UUID          "e472cea9-3ae8-4d96-951e-7086fe17d416"
+#define LED_BUILTIN_UUID      "7abd909a-a9e5-4409-96a9-7aa4fa33426f"
+
 BLEServer* pServer = NULL;
 BLECharacteristic* pLedBuiltinCharacteristic = NULL;
 
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
-
-// Generated UUID's for different Charateristics
-#define SERVICE_UUID          "e472cea9-3ae8-4d96-951e-7086fe17d416"
-#define LED_BUILTIN_UUID      "7abd909a-a9e5-4409-96a9-7aa4fa33426f"
 
 // A call back function to check if device is still connected or not
 class MyServerCallbacks : public BLEServerCallbacks
@@ -49,11 +49,11 @@ class MyServerCallbacks : public BLEServerCallbacks
 
 // Init Pneumatics Parts: assign the pins for the Pneumatics:
 int pneumatics1 = 22;
-int pneumatics2 = 1;
-int pneumatics3 = 3;
-int pneumatics4 = 21;
-int pneumatics5 = 19;
-int pneumatics6 = 18;
+int pneumatics2 = 21;
+int pneumatics3 = 17;
+int pneumatics4 = 16;
+int pneumatics5 = 4;
+int pneumatics6 = 2;
 
 // Init Release Mechanism Checks: assign the pins for RMECHS:
 int releaseMech1 = 5;
@@ -95,6 +95,7 @@ bool releaseMechOpen(int rMech)
   }
   else 
   {
+    // It is open
     return true;
   }
 }
