@@ -10,11 +10,11 @@
 #define TIME_DELAY 700
 
 // Generated UUID's for different Charateristics
-#define SERVICE_UUID          "e472cea9-3ae8-4d96-951e-7086fe17d416"
-#define LED_BUILTIN_UUID      "7abd909a-a9e5-4409-96a9-7aa4fa33426f"
+#define SERVICE_UUID "e472cea9-3ae8-4d96-951e-7086fe17d416"
+#define LED_BUILTIN_UUID "7abd909a-a9e5-4409-96a9-7aa4fa33426f"
 
-BLEServer* pServer = NULL;
-BLECharacteristic* pLedBuiltinCharacteristic = NULL;
+BLEServer *pServer = NULL;
+BLECharacteristic *pLedBuiltinCharacteristic = NULL;
 
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
@@ -31,20 +31,20 @@ class MyServerCallbacks : public BLEServerCallbacks
   {
     deviceConnected = false;
   }
-//  void onWrite(BLECharacteristic *pCharacteristic) {
-//      std::string rxValue = pCharacteristic->getValue();
-//
-//      if (rxValue.length() > 0) 
-//      {
-//        Serial.println("*********");
-//        Serial.print("Received Value: ");
-//        for (int i = 0; i < rxValue.length(); i++)
-//          Serial.print(rxValue[i]);
-//
-//        Serial.println();
-//        Serial.println("*********");
-//      }
-//    }
+  //  void onWrite(BLECharacteristic *pCharacteristic) {
+  //      std::string rxValue = pCharacteristic->getValue();
+  //
+  //      if (rxValue.length() > 0)
+  //      {
+  //        Serial.println("*********");
+  //        Serial.print("Received Value: ");
+  //        for (int i = 0; i < rxValue.length(); i++)
+  //          Serial.print(rxValue[i]);
+  //
+  //        Serial.println();
+  //        Serial.println("*********");
+  //      }
+  //    }
 };
 
 // Init Pneumatics Parts: assign the pins for the Pneumatics:
@@ -53,23 +53,22 @@ int pneumatics2 = 21;
 int pneumatics3 = 17;
 int pneumatics4 = 16;
 int pneumatics5 = 4;
-int pneumatics6 = 2;
+int pneumatics6 = 15;
 
 // Init Release Mechanism Checks: assign the pins for RMECHS:
-int releaseMech1 = 5;
-int releaseMech2 = 17;
-int releaseMech3 = 16;
-int releaseMech4 = 2;
-int releaseMech5 = 15;
-int releaseMech6 = 8;
-
-
+int releaseMech1 = 34;
+int releaseMech2 = 35;
+int releaseMech3 = 32;
+int releaseMech4 = 33;
+int releaseMech5 = 25;
+int releaseMech6 = 26;
 
 void pnuematicsOperate(int pin, int rMech, String message)
 {
   digitalWrite(pin, HIGH);
   Serial.println(message);
-  for (int i = 0; i <= TIME_DELAY; i++){
+  for (int i = 0; i <= TIME_DELAY; i++)
+  {
     delay(10);
     if (releaseMechOpen(rMech) == true)
     {
@@ -79,23 +78,23 @@ void pnuematicsOperate(int pin, int rMech, String message)
   }
   digitalWrite(pin, LOW);
   pLedBuiltinCharacteristic->setValue(BASE_VAL);
-//      digitalWrite(pneumatics2, HIGH);
-//      Serial.println("RED");
-//      delay(7000);
-//      digitalWrite(pneumatics2, LOW);
-//      pLedBuiltinCharacteristic->setValue("0");
+  //      digitalWrite(pneumatics2, HIGH);
+  //      Serial.println("RED");
+  //      delay(7000);
+  //      digitalWrite(pneumatics2, LOW);
+  //      pLedBuiltinCharacteristic->setValue("0");
 }
 
 bool releaseMechOpen(int rMech)
 {
-  if (digitalRead(rMech) == HIGH)
+  if (digitalRead(rMech) == LOW)
   {
-    // not open
+//    open
     return false;
   }
-  else 
+  else
   {
-    // It is open
+//    closed
     return true;
   }
 }
@@ -116,12 +115,12 @@ void setup()
   pinMode(pneumatics6, OUTPUT);
 
   //ReleaseMech Init Pins
-  pinMode(releaseMech1, OUTPUT);
-  pinMode(releaseMech2, OUTPUT);
-  pinMode(releaseMech3, OUTPUT);
-  pinMode(releaseMech4, OUTPUT);
-  pinMode(releaseMech5, OUTPUT);
-  pinMode(releaseMech6, OUTPUT);
+  pinMode(releaseMech1, INPUT);
+  pinMode(releaseMech2, INPUT);
+  pinMode(releaseMech3, INPUT);
+  pinMode(releaseMech4, INPUT);
+  pinMode(releaseMech5, INPUT);
+  pinMode(releaseMech6, INPUT);
 
   //Create the BLE DEVICE!
   BLEDevice::init("VAware");
@@ -136,10 +135,9 @@ void setup()
 
   //Create the BLE Charateristic for LED_BUILTIN
   pLedBuiltinCharacteristic = pService->createCharacteristic(
-          LED_BUILTIN_UUID,
-          BLECharacteristic::PROPERTY_READ |
-          BLECharacteristic::PROPERTY_WRITE
-  );
+      LED_BUILTIN_UUID,
+      BLECharacteristic::PROPERTY_READ |
+          BLECharacteristic::PROPERTY_WRITE);
   //Might need a Descriptor. DONT KNOW WHAT THAT IS :(
 
   pLedBuiltinCharacteristic->setValue("Heyo says sid");
@@ -156,6 +154,12 @@ void setup()
 
 void loop()
 {
+  digitalWrite(releaseMech1, HIGH);
+  digitalWrite(releaseMech2, HIGH);
+  digitalWrite(releaseMech3, HIGH);
+  digitalWrite(releaseMech4, HIGH);
+  digitalWrite(releaseMech5, HIGH);
+  digitalWrite(releaseMech6, HIGH);
   if (deviceConnected)
   {
     digitalWrite(LED_BUILTIN, HIGH);
