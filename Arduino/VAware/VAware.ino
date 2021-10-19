@@ -115,12 +115,12 @@ void setup()
   pinMode(pneumatics6, OUTPUT);
 
   //ReleaseMech Init Pins
-  pinMode(releaseMech1, INPUT);
-  pinMode(releaseMech2, INPUT);
-  pinMode(releaseMech3, INPUT);
-  pinMode(releaseMech4, INPUT);
-  pinMode(releaseMech5, INPUT);
-  pinMode(releaseMech6, INPUT);
+  pinMode(releaseMech1, INPUT_PULLUP);
+  pinMode(releaseMech2, INPUT_PULLUP);
+  pinMode(releaseMech3, INPUT_PULLUP);
+  pinMode(releaseMech4, INPUT_PULLUP);
+  pinMode(releaseMech5, INPUT_PULLUP);
+  pinMode(releaseMech6, INPUT_PULLUP);
 
   //Create the BLE DEVICE!
   BLEDevice::init("VAware");
@@ -154,7 +154,7 @@ void setup()
 
 void loop()
 {
-  digitalWrite(releaseMech1, HIGH);
+  digitalWrite(releaseMech1, HIGH); //closed is high
   digitalWrite(releaseMech2, HIGH);
   digitalWrite(releaseMech3, HIGH);
   digitalWrite(releaseMech4, HIGH);
