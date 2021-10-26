@@ -7,7 +7,6 @@
 #define LED_BUILTIN 2
 #define pass (void)0
 #define BASE_VAL "0"
-#define TIME_DELAY 700
 
 // Generated UUID's for different Charateristics
 #define SERVICE_UUID "e472cea9-3ae8-4d96-951e-7086fe17d416"
@@ -18,6 +17,26 @@ BLECharacteristic *pLedBuiltinCharacteristic = NULL;
 
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
+
+// Init Pneumatics Parts: assign the pins for the Pneumatics:
+const byte pneumatics1 = 22;
+const byte pneumatics2 = 21;
+const byte pneumatics3 = 17;
+const byte pneumatics4 = 16;
+const byte pneumatics5 = 4;
+const byte pneumatics6 = 15;
+
+// Init Release Mechanism Checks: assign the pins for RMECHS:
+const byte releaseMech1 = 34;
+const byte releaseMech2 = 23;
+const byte releaseMech3 = 32;
+const byte releaseMech4 = 33;
+const byte releaseMech5 = 25;
+const byte releaseMech6 = 26;
+
+// State Variables
+unsigned long previousMillis = 0;
+const long interval = 7000;
 
 // A call back function to check if device is still connected or not
 class MyServerCallbacks : public BLEServerCallbacks
@@ -47,56 +66,27 @@ class MyServerCallbacks : public BLEServerCallbacks
   //    }
 };
 
-// Init Pneumatics Parts: assign the pins for the Pneumatics:
-int pneumatics1 = 22;
-int pneumatics2 = 21;
-int pneumatics3 = 17;
-int pneumatics4 = 16;
-int pneumatics5 = 4;
-int pneumatics6 = 15;
-
-// Init Release Mechanism Checks: assign the pins for RMECHS:
-int releaseMech1 = 34;
-int releaseMech2 = 35;
-int releaseMech3 = 32;
-int releaseMech4 = 33;
-int releaseMech5 = 25;
-int releaseMech6 = 26;
-
 void pnuematicsOperate(int pin, int rMech, String message)
 {
-  digitalWrite(pin, HIGH);
-  Serial.println(message);
-  for (int i = 0; i <= TIME_DELAY; i++)
-  {
-    delay(10);
-    if (releaseMechOpen(rMech) == true)
+  unsigned long currentMillis = millis(); //
+  
+  digitalWrite(pin,HIGH);
+  //Serial.println(message);
+  //Serial.println(pneuTimerStart);
+  //Serial.println(pneuTimerEnd);
+  
+  while (currentMillis - previousMillis >= interval ) {
+    //Serial.println(millis());
+    if (digitalRead(rMech) == HIGH)
     {
+      //Serial.println(millis());
+      //Serial.println("Pressed");
       digitalWrite(pin, LOW);
       break;
     }
   }
   digitalWrite(pin, LOW);
   pLedBuiltinCharacteristic->setValue(BASE_VAL);
-  //      digitalWrite(pneumatics2, HIGH);
-  //      Serial.println("RED");
-  //      delay(7000);
-  //      digitalWrite(pneumatics2, LOW);
-  //      pLedBuiltinCharacteristic->setValue("0");
-}
-
-bool releaseMechOpen(int rMech)
-{
-  if (digitalRead(rMech) == LOW)
-  {
-//    open
-    return false;
-  }
-  else
-  {
-//    closed
-    return true;
-  }
 }
 
 void setup()
@@ -154,20 +144,23 @@ void setup()
 
 void loop()
 {
-  digitalWrite(releaseMech1, HIGH); //closed is high
-  digitalWrite(releaseMech2, HIGH);
-  digitalWrite(releaseMech3, HIGH);
-  digitalWrite(releaseMech4, HIGH);
-  digitalWrite(releaseMech5, HIGH);
-  digitalWrite(releaseMech6, HIGH);
+//  digitalWrite(releaseMech1, HIGH); //closed is high
+//  digitalWrite(releaseMech2, HIGH);
+//  digitalWrite(releaseMech3, HIGH);
+//  digitalWrite(releaseMech4, HIGH);
+//  digitalWrite(releaseMech5, HIGH);
+//  digitalWrite(releaseMech6, HIGH);
+
+  
   if (deviceConnected)
   {
     digitalWrite(LED_BUILTIN, HIGH);
     std::string value = pLedBuiltinCharacteristic->getValue();
+    unsigned long currentMillis = millis();
 
     if (value == "1")
     {
-      pnuematicsOperate(pneumatics1, releaseMech1, "INFLATEEEE");
+      //pnuematicsOperate(pneumatics1, releaseMech1, "INFLATEEEE");
     }
     else if (value == "2")
     {
