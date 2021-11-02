@@ -31,72 +31,59 @@ class MyServerCallbacks : public BLEServerCallbacks
   {
     deviceConnected = false;
   }
-  //  void onWrite(BLECharacteristic *pCharacteristic) {
-  //      std::string rxValue = pCharacteristic->getValue();
-  //
-  //      if (rxValue.length() > 0)
-  //      {
-  //        Serial.println("*********");
-  //        Serial.print("Received Value: ");
-  //        for (int i = 0; i < rxValue.length(); i++)
-  //          Serial.print(rxValue[i]);
-  //
-  //        Serial.println();
-  //        Serial.println("*********");
-  //      }
-  //    }
 };
 
 // Init Pneumatics Parts: assign the pins for the Pneumatics:
-int pneumatics1 = 22;
-int pneumatics2 = 21;
-int pneumatics3 = 17;
-int pneumatics4 = 16;
-int pneumatics5 = 4;
-int pneumatics6 = 15;
+// a19 GND      j19 3.3V
+// a18 23       j18 EN
+// a17 22 x      j17 36 x
+// a16 1        j16 39 x
+// a15 3        j15 34 x
+// a14 21 x      j14 35 x
+// a13 GND      j13 32 
+// a12 19 x      j12 33 z
+// a11 18 x      j11 25 z
+// a10 5        j10 26 z
+// a09 17 x      j09 27
+// a08 16 x      j08 14
+// a07 4  x      j07 12
+// a06 0        j06 GND
+// a05 2        j05 13 h
+// a04 15       j04 9 h
+// a03 8        j03 10
+// a02 7        j02 11
+// a01 6        j01 5V
+
+int pneumatics1 = 22; // c red      neck      
+int pneumatics2 = 21; // c white    left arm
+int pneumatics3 = 17; // c green    right wrist
+int pneumatics4 = 16; // c blue     torso
+int pneumatics5 = 19; // c yellow   left wrist
+int pneumatics6 = 18; // c black    right arm
 
 // Init Release Mechanism Checks: assign the pins for RMECHS:
-int releaseMech1 = 34;
-int releaseMech2 = 35;
-int releaseMech3 = 32;
-int releaseMech4 = 33;
-int releaseMech5 = 25;
-int releaseMech6 = 26;
+int releaseMech1 = 32; // c red
+int releaseMech2 = 13; // c white
+int releaseMech3 = 33; // c green
+int releaseMech4 = 27; // c blue
+int releaseMech5 = 26; // c yellow
+int releaseMech6 = 25; // c black
 
 void pnuematicsOperate(int pin, int rMech, String message)
 {
   digitalWrite(pin, HIGH);
   Serial.println(message);
   for (int i = 0; i <= TIME_DELAY; i++)
-  {
-    delay(10);
-    if (releaseMechOpen(rMech) == true)
     {
-      digitalWrite(pin, LOW);
-      break;
+      delay(10);
+      if (digitalRead(rMech) == HIGH)
+      {
+        digitalWrite(pin, LOW);
+        break;
+      }
     }
-  }
   digitalWrite(pin, LOW);
   pLedBuiltinCharacteristic->setValue(BASE_VAL);
-  //      digitalWrite(pneumatics2, HIGH);
-  //      Serial.println("RED");
-  //      delay(7000);
-  //      digitalWrite(pneumatics2, LOW);
-  //      pLedBuiltinCharacteristic->setValue("0");
-}
-
-bool releaseMechOpen(int rMech)
-{
-  if (digitalRead(rMech) == LOW)
-  {
-//    open
-    return false;
-  }
-  else
-  {
-//    closed
-    return true;
-  }
 }
 
 void setup()
@@ -131,7 +118,6 @@ void setup()
 
   //Create the BLE Service
   BLEService *pService = pServer->createService(SERVICE_UUID);
-  //BLEService *pService = pService->createService(SERVICE_UUID);
 
   //Create the BLE Charateristic for LED_BUILTIN
   pLedBuiltinCharacteristic = pService->createCharacteristic(
@@ -147,19 +133,13 @@ void setup()
   BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
   pAdvertising->addServiceUUID(SERVICE_UUID);
   pAdvertising->setScanResponse(false);
-  //pAdvertising->setMinPreferred();
+  
   BLEDevice::startAdvertising();
   Serial.println("Waiting a client connection to notify...");
 }
 
 void loop()
 {
-  digitalWrite(releaseMech1, HIGH); //closed is high
-  digitalWrite(releaseMech2, HIGH);
-  digitalWrite(releaseMech3, HIGH);
-  digitalWrite(releaseMech4, HIGH);
-  digitalWrite(releaseMech5, HIGH);
-  digitalWrite(releaseMech6, HIGH);
   if (deviceConnected)
   {
     digitalWrite(LED_BUILTIN, HIGH);
